@@ -1,5 +1,8 @@
-from selenium import webdriver
 from time import sleep
+
+from selenium import webdriver
+
+
 def save_page(url, fname):
     # open page
     options = webdriver.ChromeOptions()
@@ -29,7 +32,18 @@ def get_mileage(pcl):
     if "." in strmiles:
         strsep = strmiles.replace(".","")
         return int(strsep)
-    return int(strmiles)
+    
+    if len(strmiles) > 0:
+        if str(strmiles) == "Dealership":
+            strmiles2 = "Dealership"
+        elif int(float(strmiles)) == int(strmiles):
+            strmiles2 = int(strmiles)
+        else:
+            strmiles2 = "N/A"
+    else:
+        strmiles2 = "N/A" # (or number = 0 if you prefer)
+        
+    return strmiles2
     
 def get_link(p):
     linktmp = p.parent.parent.parent.find("a").get("href")
