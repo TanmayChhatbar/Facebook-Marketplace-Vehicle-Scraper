@@ -1,0 +1,11 @@
+{
+    "facebook": {
+        "email": "",
+        "password": "",
+        "query": "r6",
+        "desired_maximum_mileage": 16000,
+        "desired_minimum_year": 2006,
+        "maximum_price": 2000,
+        "minimum_price": 100
+    }
+}
