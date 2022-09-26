@@ -1,7 +1,7 @@
+from selenium import webdriver
 import json
 from time import sleep
 
-from selenium import webdriver
 
 def send(driver, cmd, params={}):
   resource = "/session/%s/chromium/send_command_and_get_result" % driver.session_id
@@ -39,7 +39,18 @@ def get_mileage(pcl):
     if "." in strmiles:
         strsep = strmiles.replace(".","")
         return int(strsep)
-    return int(strmiles)
+    
+    if len(strmiles) > 0:
+        if str(strmiles) == "Dealership":
+            strmiles2 = "Dealership"
+        elif int(float(strmiles)) == int(strmiles):
+            strmiles2 = int(strmiles)
+        else:
+            strmiles2 = "N/A"
+    else:
+        strmiles2 = "N/A" # (or number = 0 if you prefer)
+        
+    return strmiles2
     
 def get_link(p):
     linktmp = p.parent.parent.parent.find("a").get("href")
