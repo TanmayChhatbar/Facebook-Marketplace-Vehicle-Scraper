@@ -1,31 +1,34 @@
-from utils import *
-import re
-from bs4 import BeautifulSoup
-from datetime import datetime
+import collections
 import csv
+import re
+from datetime import datetime
+
+from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-# search queries
-location = "greenville"
-query = "r6"
-exact = "False"
-maxPrice = 7000
+from utils import *
+collections.Callable = collections.abc.Callable                         # type: ignore
 
-sortby = 0  # 0-name, 1-price, 2-mileage, 3-loc
+with open('Facebook Marketplace Car Scraper\setup.json') as fin:        # type: ignore
+    setup = json.load(fin)
+
 
 def main():
-    url = f"https://www.facebook.com/marketplace/{location}/search?maxPrice={maxPrice}&query={query}&exact={exact}"
-
+    # open page
+    url = 'https://www.facebook.com/marketplace/'
     years, names, prices, mileages, locs, links = [], [], [], [], [], []
     testfile = "tmp.mhtml"
+
     testfile = save_page(url, testfile)
 
-    with open(testfile,'r') as pg:
-        content = pg.read().replace("=\n\n","")                   # read html data
-        soup = BeautifulSoup(content, 'lxml')                   # create soup object
+    with open(testfile, 'r') as pg:
+        content = pg.read().replace("=\n\n", "")                   # read html data
+        # create soup object
+        soup = BeautifulSoup(content, 'lxml')
 
         # find class for price
+        # type: ignore
         re_price = re.compile("\$[0123456789,]+")
         prices_obj = soup.body.findAll(text=re_price)
         parent_list = []
@@ -34,7 +37,7 @@ def main():
             tmp = price_obj.parent.parent.parent.parent.parent
             if len(list(tmp.children)) == 4:
                 parent_list.append(tmp)
-      
+
         for p in parent_list:
             # get data in children
             pcl = list(p.children)
@@ -57,14 +60,15 @@ def main():
         mileages.append(u[3])
         locs.append(u[4])
         links.append(u[5])
-    
-    # export data
-    fname = str(datetime.now()).replace(":","-")[2:-5].replace(" ","--")
-    with open(f"sc_{fname}.csv",'w', newline='') as f,\
-        open(f"sc_{fname}_yamaha.csv",'w', newline='') as fy,\
-        open(f"sc_{fname}_desired.csv",'w', newline='') as fz:
 
-        headers = ["year", "name", "price", "mileage", "location","link"]
+    # export data
+    fname = str(datetime.now()).replace(
+        ":", "-")[2:-5].replace(" ", "--")  # datetime file save name
+    with open(f"sc_{fname}.csv", 'w', newline='') as f,\
+            open(f"sc_{fname}_{setup['facebook']['carBrand']}.csv", 'w', newline='') as fy,\
+            open(f"sc_{fname}_desired.csv", 'w', newline='') as fz:
+
+        headers = ["year", "name", "price", "mileage", "location", "link"]
         csw = csv.writer(f)
         csw2 = csv.writer(fy)
         csw3 = csv.writer(fz)
@@ -74,14 +78,18 @@ def main():
 
         for year, name, price, mileage, loc, link in zip(years, names, prices, mileages, locs, links):
             csw.writerow([year, name, price, mileage, loc, link])
-
-            if "yamaha" in name.lower():
+            if setup["facebook"]["carBrand"].lower() in name.lower():   # if car name is in name
                 csw2.writerow([year, name, price, mileage, loc, link])
 
-                if mileage < 16000 and int(year) > 2006:
+                # if mileage is not available - lazy rn sorry
+                if str(mileage) in ["Dealership", "N/A"]:
+                    pass
+                elif int(mileage) < (setup['facebook']['desired_maximum_mileage']) and int(year) > (setup['facebook']['desired_minimum_year']):
                     csw3.writerow([year, name, price, mileage, loc, link])
 
-                    print(year, name, "\b,", price, "\b,", mileage, "\b,", loc, "\b,", link)
+                    print(year, name, "\b,", price, "\b,",
+                          mileage, "\b,", loc, "\b,", link)
+
 
 if __name__ == "__main__":
     main()
