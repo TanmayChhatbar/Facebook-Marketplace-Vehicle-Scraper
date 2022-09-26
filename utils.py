@@ -1,7 +1,14 @@
+from selenium import webdriver
+import json
 from time import sleep
 
-from selenium import webdriver
 
+def send(driver, cmd, params={}):
+  resource = "/session/%s/chromium/send_command_and_get_result" % driver.session_id
+  url = driver.command_executor._url + resource
+  body = json.dumps({'cmd': cmd, 'params': params})
+  response = driver.command_executor._request('POST', url, body)
+  return response.get('value')
 
 def save_page(url, fname):
     # open page
@@ -16,7 +23,7 @@ def save_page(url, fname):
         sleep(2)
 
     # snapshot and save
-    res = browser.execute_cdp_cmd('Page.captureSnapshot', {})
+    res = send(browser, "Page.captureSnapshot", {"format": "mhtml"})
     resd = str(res['data']).replace("=\n\n","")
     with open(fname, "w",  encoding='utf-8') as file:
         file.write(resd)
