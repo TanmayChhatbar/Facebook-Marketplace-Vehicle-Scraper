@@ -1,0 +1,13 @@
+{
+  "facebook": {
+    "email": "",
+    "password": "",
+    "WebDriver_Path": "C:\\Users\\livxy\\OneDrive\\Documents\\Chrome Driver\\chromedriver.exe",
+    "query": "r6",
+    "desired_maximum_mileage": 16000,
+    "desired_minimum_year": 2006,
+    "minimum_price": 100,
+    "maximum_price": 2000,
+    "carBrand": "Yamaha"
+  }
+}
