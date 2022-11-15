@@ -12,6 +12,8 @@ Hi so the original person didn't exactly finish the project so I worked on this 
 - Price range customization
 - Vehicle brand customization
 
+![image](https://user-images.githubusercontent.com/67598470/201967975-23994744-3169-44fa-9c3a-a121192b35f3.png)
+
 ## How to run/use:
 1. Simply clone the repository, and in your favorite text editor go to the file called ``` setup.json ``` this will contain the following:
 ```json
