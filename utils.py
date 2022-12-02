@@ -23,7 +23,7 @@ sortby = 0  # 0-name, 1-price, 2-mileage, 3-loc
 
 
 def send(driver, cmd, params={}):
-    resource = "/session/%s/chromium/send_command_and_get_result" % driver.session_id
+    resource = f"/session/{driver.session_id}/chromium/send_command_and_get_result"
     url = driver.command_executor._url + resource
     body = json.dumps({'cmd': cmd, 'params': params})
     response = driver.command_executor._request('POST', url, body)
@@ -120,6 +120,4 @@ def get_mileage(pcl):
 
 def get_link(p):
     linktmp = p.parent.parent.parent.find("a").get("href")
-    if "3D\"" in linktmp[0:3]:
-        return linktmp[3:-1]
-    return linktmp
+    return linktmp[3:-1] if "3D\"" in linktmp[:3] else linktmp

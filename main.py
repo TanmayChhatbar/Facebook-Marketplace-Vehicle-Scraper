@@ -44,7 +44,7 @@ def main():
             # find details
             prices.append(get_price(pcl))
             names.append(pcl[1].get_text()[5:])
-            years.append(pcl[1].get_text()[0:4])
+            years.append(pcl[1].get_text()[:4])
             locs.append(pcl[2].get_text())
             mileages.append(get_mileage(pcl))
             links.append(get_link(p))
@@ -64,9 +64,7 @@ def main():
     # export data
     fname = str(datetime.now()).replace(
         ":", "-")[2:-5].replace(" ", "--")  # datetime file save name
-    with open(f"sc_{fname}.csv", 'w', newline='') as f,\
-            open(f"sc_{fname}_{setup['facebook']['carBrand']}.csv", 'w', newline='') as fy,\
-            open(f"sc_{fname}_desired.csv", 'w', newline='') as fz:
+    with (open(f"sc_{fname}.csv", 'w', newline='') as f, open(f"sc_{fname}_{setup['facebook']['carBrand']}.csv", 'w', newline='') as fy, open(f"sc_{fname}_desired.csv", 'w', newline='') as fz):
 
         headers = ["year", "name", "price", "mileage", "location", "link"]
         csw = csv.writer(f)
@@ -82,7 +80,7 @@ def main():
                 csw2.writerow([year, name, price, mileage, loc, link])
 
                 # if mileage is not available - lazy rn sorry
-                if str(mileage) in ["Dealership", "N/A"]:
+                if str(mileage) in {"Dealership", "N/A"}:
                     pass
                 elif int(mileage) < (setup['facebook']['desired_maximum_mileage']) and int(year) > (setup['facebook']['desired_minimum_year']):
                     csw3.writerow([year, name, price, mileage, loc, link])
