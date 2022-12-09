@@ -63,12 +63,11 @@ def main():
         links.append(u[5])
 
     # export data
-    fname = (
-        str(datetime.now()).replace(":", "-")[2:-5].replace(" ", "--")
-    )  # datetime file save name
-    with (open(f"sc_{fname}.csv", "w", newline="") as f, open(
-            f"sc_{fname}_{setup['facebook']['carBrand']}.csv", "w", newline=""
-        ) as fy, open(f"sc_{fname}_desired.csv", "w", newline="") as fz):
+    fname = str(datetime.now()).replace(
+        ":", "-")[2:-5].replace(" ", "--")  # datetime file save name
+    with open(f"sc_{fname}.csv", 'w', newline='') as f,\
+            open(f"sc_{fname}_{setup['facebook']['carBrand']}.csv", 'w', newline='') as fy,\
+            open(f"sc_{fname}_desired.csv", 'w', newline='') as fz:
 
         headers = ["year", "name", "price", "mileage", "location", "link"]
         csw = csv.writer(f)
