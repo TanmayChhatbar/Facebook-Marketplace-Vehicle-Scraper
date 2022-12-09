@@ -10,3 +10,4 @@ package.json
 package-lock.json
 notify.js
 config.json
+__pycache__/

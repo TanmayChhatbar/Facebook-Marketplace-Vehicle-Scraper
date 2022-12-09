@@ -168,7 +168,9 @@ def run_session_2(driver: str):
     driver.get("https://www.facebook.com/")
     WebDriverWait(driver, 10).until(EC.title_contains("Facebook"))
     # Send keys and enter email
-    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'email'))).send_keys('da')
+    email = CONFIG['email'] or os.environ.get('EMAIL') or input('Enter email/phone number for FaceBook: ')
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'email'))).send_keys(email)
+    password = CONFIG['password'] or os.environ.get('PASSWORD') or input('Enter password for FaceBook: ')
     # Say success if the email is entered
     time.sleep(300)
     driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": "Email has been successfully entered!"}}')
