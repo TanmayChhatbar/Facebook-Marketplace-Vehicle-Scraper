@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
 
-with open("Facebook Marketplace Car Scraper\setup.json") as fin:
+with open("setup.json") as fin:
     setup = json.load(fin)
 
 # search queries
@@ -22,8 +22,20 @@ maxPrice = 2000
 sortby = 0  # 0-name, 1-price, 2-mileage, 3-loc
 
 
-def send(driver, cmd, params={}):
-    resource = "/session/%s/chromium/send_command_and_get_result" % driver.session_id
+def send(driver, cmd, params=None):
+    """send command to chrome driver and get result back
+
+    Args:
+        driver (webdriver): chrome driver
+        cmd (str): command to send 
+        params (dict, optional): parameters to send. Defaults to None.
+
+    Returns:
+        dict: result of command
+    """    
+    if params is None:
+        params = {}
+    resource = f"/session/{driver.session_id}/chromium/send_command_and_get_result"
     url = driver.command_executor._url + resource
     body = json.dumps({'cmd': cmd, 'params': params})
     response = driver.command_executor._request('POST', url, body)
@@ -31,6 +43,15 @@ def send(driver, cmd, params={}):
 
 
 def save_page(url, fname):
+    """save page as mhtml file and return file name
+
+    Args:
+        url (str): url to save as mhtml file and open in chrome driver 
+        fname (str): file name to save as 
+
+    Returns:
+        str: file name of saved file
+    """    
     # open page
     options = webdriver.ChromeOptions()
     options.add_argument("--save-page-as-mhtml")
@@ -93,6 +114,14 @@ def save_page(url, fname):
 
 
 def get_price(pcl):
+    """get_price gets the price of the car from the html element of the car listing page on facebook marketplace 
+
+    Args:
+        pcl ( ): 
+
+    Returns:
+        _type_: _description_
+    """    
     # print(pcl[0].get_text().split("$"))
     return "$"+str(int(pcl[0].get_text().split("$")[1].replace(",", "").replace("\n", "")))
 
@@ -120,6 +149,4 @@ def get_mileage(pcl):
 
 def get_link(p):
     linktmp = p.parent.parent.parent.find("a").get("href")
-    if "3D\"" in linktmp[0:3]:
-        return linktmp[3:-1]
-    return linktmp
+    return linktmp[3:-1] if "3D\"" in linktmp[:3] else linktmp

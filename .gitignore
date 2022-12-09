@@ -3,3 +3,10 @@
 
 # Ignore files related to API keys
 .env
+Scraping Bee 3 Searches - Final - Premium Proxy.js
+node_modules/
+*.pyc
+package.json
+package-lock.json
+notify.js
+config.json
