@@ -3,6 +3,8 @@
 
 ### For use of scraping vehicle information on Facebook Marketplace using Selenium.
 
+### **DEPRECATED** _for now..._
+
 Hi so the original person didn't exactly finish the project so I worked on this for a couple of hours and it has customizable features for your needs such as:
 
 - Automatic log-in process on FaceBook using Selenium.
