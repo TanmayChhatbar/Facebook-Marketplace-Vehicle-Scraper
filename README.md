@@ -1,9 +1,9 @@
 # Facebook-Marketplace-Vehicle-Scraper
 [![CodeQL](https://github.com/livxy/Facebook-Marketplace-Vehicle-Scraper/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/livxy/Facebook-Marketplace-Vehicle-Scraper/actions/workflows/codeql-analysis.yml)
 
-### For use of scraping vehicle information on Facebook Marketplace using Selenium.
+## **DEPRECATED** _for now..._
 
-### **DEPRECATED** _for now..._
+### For use of scraping vehicle information on Facebook Marketplace using Selenium.
 
 Hi so the original person didn't exactly finish the project so I worked on this for a couple of hours and it has customizable features for your needs such as:
 
