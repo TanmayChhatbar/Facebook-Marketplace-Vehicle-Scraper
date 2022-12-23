@@ -41,7 +41,6 @@ def send(driver, cmd, params=None):
     response = driver.command_executor._request('POST', url, body)
     return response.get('value')
 
-
 def save_page(url, fname):
     """save page as mhtml file and return file name
 
@@ -106,7 +105,6 @@ def save_page(url, fname):
 
     # snapshot and save
     res = send(browser, "Page.captureSnapshot", {"format": "mhtml"})
-
     resd = str(res['data']).replace("=\n\n", "")
     with open(fname, "w",  encoding='utf-8') as file:
         file.write(resd)
@@ -133,7 +131,6 @@ def get_mileage(pcl):
     if "." in strmiles:
         strsep = strmiles.replace(".", "")
         return int(strsep)
-
     if len(strmiles) > 0:
         if str(strmiles) == "Dealership":
             strmiles2 = "Dealership"
